@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Talks Event</title>
+    <style>:root {
+        --primary-color: #4A90E2; /* Blue */
+        --secondary-color: #50E3C2; /* Green-ish */
+        --accent-color: #F5A623; /* Orange */
+        --text-color: #333;
+        --light-text-color: #666;
+        --background-color: #F8F9FA;
+        --card-background: #FFFFFF;
+        --border-color: #E0E0E0;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+    }
+
+    /* Basic Reset & Body Styling */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Header */
+    .event-header {
+        background-color: var(--primary-color);
+        color: #FFFFFF;
+        padding: 3rem 1rem;
+        text-align: center;
+        box-shadow: 0 4px 10px var(--shadow-color);
+    }
+
+    .event-header h1 {
+        font-size: 2.8rem;
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+
+    .event-header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+
+    /* Main Content Container */
+    .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        flex-grow: 1;
+    }
+
+    /* Filter Section */
+    .filters-section {
+        background-color: var(--card-background);
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px var(--shadow-color);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .filters-section label {
+        font-weight: bold;
+        color: var(--light-text-color);
+        font-size: 1.1rem;
+    }
+
+    .filters-section select {
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        font-size: 1rem;
+        background-color: #FFFFFF;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .filters-section select:hover {
+        border-color: var(--primary-color);
+    }
+
+    .filters-section select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+    }
+
+    /* Schedule Section */
+    .schedule-section h2 {
+        font-size: 2rem;
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid var(--secondary-color);
+        padding-bottom: 0.5rem;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .schedule-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    /* Talk Card Styling */
+    .talk-card, .break-card {
+        background-color: var(--card-background);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px var(--shadow-color);
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .talk-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px var(--shadow-color);
+    }
+
+    .talk-card.hidden {
+        display: none;
+    }
+
+    .talk-card .time, .break-card .time {
+        font-size: 0.9rem;
+        color: var(--primary-color);
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px dashed var(--border-color);
+        padding-bottom: 0.5rem;
+    }
+
+    .talk-card h3 {
+        font-size: 1.4rem;
+        color: var(--text-color);
+        margin-bottom: 0.75rem;
+    }
+
+    .talk-card .speakers {
+        font-size: 1rem;
+        color: var(--light-text-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .talk-card .categories {
+        font-size: 0.85rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .talk-card .category-tag {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.2em 0.6em;
+        border-radius: 4px;
+        font-size: 0.8em;
+    }
+
+    .talk-card .description {
+        font-size: 0.95rem;
+        color: var(--light-text-color);
+        flex-grow: 1; /* Allows description to take available space */
+    }
+
+    /* Break Card Styling */
+    .break-card {
+        background-color: #E6F7FF; /* Lighter blue for breaks */
+        border: 1px dashed var(--primary-color);
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .break-card h3 {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .break-card .duration {
+        font-size: 1rem;
+        color: var(--light-text-color);
+    }
+
+    /* Footer */
+    .event-footer {
+        background-color: var(--text-color);
+        color: #FFFFFF;
+        text-align: center;
+        padding: 1.5rem 1rem;
+        margin-top: 3rem;
+        font-size: 0.9rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .event-header h1 {
+            font-size: 2.2rem;
+        }
+
+        .event-header p {
+            font-size: 1rem;
+        }
+
+        .schedule-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .filters-section {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+    }
+</style>
+</head>
+<body>
+    <header class="event-header">
+        <h1>Welcome to Tech Talks 2026!</h1>
+        <p>A day filled with insightful technical discussions.</p>
+    </header>
+
+    <main class="container">
+        <section class="filters-section">
+            <label for="category-filter">Filter by Category:</label>
+            <select id="category-filter">
+                <option value="all">All Categories</option>
+                <!-- Category options will be dynamically loaded here by JavaScript -->
+            </select>
+        </section>
+
+        <section class="schedule-section">
+            <h2>Event Schedule</h2>
+            <div id="schedule-list" class="schedule-grid">
+                <!-- Talks and breaks will be dynamically loaded here by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="event-footer">
+        <p>&copy; 2026 Tech Talks Event. All rights reserved.</p>
+    </footer>
+
+    <script>
+    // schedule calculation logic function is not needed directly in the browser,
+    // as fullSchedule is already calculated and embedded.
+    // However, for clarity and completeness if this were a modular project,
+    // it would be imported. For a single file, it's just inlined.
+    
+    const talksData = [
+  {
+    "id": "talk1",
+    "title": "The Future of AI in Web Development",
+    "speakers": [
+      "Alice Johnson"
+    ],
+    "categories": [
+      "AI",
+      "Web Development",
+      "Future Tech"
+    ],
+    "duration": "1 hour",
+    "description": "Explore the exciting intersection of Artificial Intelligence and modern web development, from AI-powered UI generation to intelligent backend services."
+  },
+  {
+    "id": "talk2",
+    "title": "Building Scalable Microservices with Node.js",
+    "speakers": [
+      "Bob Williams",
+      "Carol Davis"
+    ],
+    "categories": [
+      "Node.js",
+      "Microservices",
+      "Backend"
+    ],
+    "duration": "1 hour",
+    "description": "A deep dive into best practices for designing and implementing scalable microservices architectures using Node.js and related technologies."
+  },
+  {
+    "id": "talk3",
+    "title": "Mastering Modern CSS Layouts (Grid & Flexbox)",
+    "speakers": [
+      "David Green"
+    ],
+    "categories": [
+      "CSS",
+      "Frontend",
+      "UI/UX"
+    ],
+    "duration": "1 hour",
+    "description": "Unlock the power of CSS Grid and Flexbox to create complex and responsive layouts with ease, enhancing user experience across all devices."
+  },
+  {
+    "id": "talk4",
+    "title": "Demystifying Serverless Functions",
+    "speakers": [
+      "Eve Black"
+    ],
+    "categories": [
+      "Serverless",
+      "Cloud",
+      "Backend"
+    ],
+    "duration": "1 hour",
+    "description": "Understand the fundamentals of serverless computing, common use cases, and how to deploy and manage serverless functions effectively."
+  },
+  {
+    "id": "talk5",
+    "title": "Optimizing Web Performance for a Faster User Experience",
+    "speakers": [
+      "Frank White",
+      "Grace Hall"
+    ],
+    "categories": [
+      "Web Performance",
+      "Frontend",
+      "Optimization"
+    ],
+    "duration": "1 hour",
+    "description": "Learn practical techniques and tools to drastically improve your website\\\\\\'s loading speed and overall responsiveness, leading to better user engagement."
+  },
+  {
+    "id": "talk6",
+    "title": "Introduction to WebAssembly for High-Performance Apps",
+    "speakers": [
+      "Harry Brown"
+    ],
+    "categories": [
+      "WebAssembly",
+      "Performance",
+      "Future Tech"
+    ],
+    "duration": "1 hour",
+    "description": "Get an introduction to WebAssembly (Wasm) and discover how it enables near-native performance for web applications, opening up new possibilities for complex tasks."
+  }
+];
+    const fullSchedule = [
+  {
+    "type": "talk",
+    "id": "talk1",
+    "title": "The Future of AI in Web Development",
+    "speakers": [
+      "Alice Johnson"
+    ],
+    "categories": [
+      "AI",
+      "Web Development",
+      "Future Tech"
+    ],
+    "duration": "1 hour",
+    "description": "Explore the exciting intersection of Artificial Intelligence and modern web development, from AI-powered UI generation to intelligent backend services.",
+    "startTime": "10:00 AM",
+    "endTime": "11:00 AM"
+  },
+  {
+    "type": "break",
+    "id": "transition1",
+    "title": "Transition",
+    "startTime": "11:00 AM",
+    "endTime": "11:10 AM",
+    "duration": "10 minutes"
+  },
+  {
+    "type": "talk",
+    "id": "talk2",
+    "title": "Building Scalable Microservices with Node.js",
+    "speakers": [
+      "Bob Williams",
+      "Carol Davis"
+    ],
+    "categories": [
+      "Node.js",
+      "Microservices",
+      "Backend"
+    ],
+    "duration": "1 hour",
+    "description": "A deep dive into best practices for designing and implementing scalable microservices architectures using Node.js and related technologies.",
+    "startTime": "11:10 AM",
+    "endTime": "12:10 PM"
+  },\n  {\n    \"type\": \"break\",\n    \"id\": \"transition2\",\n    \"title\": \"Transition\",\n    \"startTime\": \"12:10 PM\",\n    \"endTime\": \"12:20 PM\",\n    \"duration\": \"10 minutes\"\n  },\n  {\n    \"type\": \"talk\",\n    \"id\": \"talk3\",\n    \"title\": \"Mastering Modern CSS Layouts (Grid & Flexbox)\",\n    \"speakers\": [\n      \"David Green\"\n    ],\n    \"categories\": [\n      \"CSS\",\n      \"Frontend\",\n      \"UI/UX\"\n    ],\n    \"duration\": \"1 hour\",\n    \"description\": \"Unlock the power of CSS Grid and Flexbox to create complex and responsive layouts with ease, enhancing user experience across all devices.\",\n    \"startTime\": \"12:20 PM\",\n    \"endTime\": \"01:20 PM\"\n  },\n  {\n    \"type\": \"break\",\n    \"id\": \"lunch\",\n    \"title\": \"Lunch Break\",\n    \"startTime\": \"01:20 PM\",\n    \"endTime\": \"02:20 PM\",\n    \"duration\": \"1 hour\"\n  },\n  {\n    \"type\": \"break\",\n    \"id\": \"postLunchTransition\",\n    \"title\": \"Transition\",\n    \"startTime\": \"02:20 PM\",\n    \"endTime\": \"02:30 PM\",\n    \"duration\": \"10 minutes\"\n  },\n  {\n    \"type\": \"break\",\n    \"id\": \"transition3\",\n    \"title\": \"Transition\",\n    \"startTime\": \"02:30 PM\",\n    \"endTime\": \"02:40 PM\",\n    \"duration\": \"10 minutes\"\n  },\n  {\n    \"type\": \"talk\",\n    \"id\": \"talk4\",\n    \"title\": \"Demystifying Serverless Functions\",\n    \"speakers\": [\n      \"Eve Black\"\n    ],\n    \"categories\": [\n      \"Serverless\",\n      \"Cloud\",\n      \"Backend\"\n    ],\n    \"duration\": \"1 hour\",\n    \"description\": \"Understand the fundamentals of serverless computing, common use cases, and how to deploy and manage serverless functions effectively.\",\n    \"startTime\": \"02:40 PM\",\n    \"endTime\": \"03:40 PM\"\n  },\n  {\n    \"type\": \"break\",\n    \"id\": \"transition4\",\n    \"title\": \"Transition\",\n    \"startTime\": \"03:40 PM\",\n    \"endTime\": \"03:50 PM\",\n    \"duration\": \"10 minutes\"\n  },\n  {\n    \"type\": \"talk\",\n    \"id\": \"talk5\",\n    \"title\": \"Optimizing Web Performance for a Faster User Experience\",\n    \"speakers\": [\n      \"Frank White\",\n      \"Grace Hall\"\n    ],\n    \"categories\": [\n      \"Web Performance\",\n      \"Frontend\",\n      \"Optimization\"\n    ],\n    \"duration\": \"1 hour\",\n    \"description\": \"Learn practical techniques and tools to drastically improve your website\\\\\\'s loading speed and overall responsiveness, leading to better user engagement.\",\n    \"startTime\": \"03:50 PM\",\n    \"endTime\": \"04:50 PM\"\n  },\n  {\n    \"type\": \"break\",\n    \"id\": \"transition5\",\n    \"title\": \"Transition\",\n    \"startTime\": \"04:50 PM\",\n    \"endTime\": \"05:00 PM\",\n    \"duration\": \"10 minutes\"\n  },\n  {\n    \"type\": \"talk\",\n    \"id\": \"talk6\",\n    \"title\": \"Introduction to WebAssembly for High-Performance Apps\",\n    \"speakers\": [\n      \"Harry Brown\"\n    ],\n    \"categories\": [\n      \"WebAssembly\",\n      \"Performance\",\n      \"Future Tech\"\n    ],\n    \"duration\": \"1 hour\",\n    \"description\": \"Get an introduction to WebAssembly (Wasm) and discover how it enables near-native performance for web applications, opening up new possibilities for complex tasks.\",\n    \"startTime\": \"05:00 PM\",\n    \"endTime\": \"06:00 PM\"\n  }\n];\n\n    document.addEventListener('DOMContentLoaded', () => {\n        const scheduleList = document.getElementById('schedule-list');\n        const categoryFilter = document.getElementById('category-filter');\n\n        function renderSchedule(currentSchedule) {\n            scheduleList.innerHTML = ''; // Clear current schedule\n            currentSchedule.forEach(item => {\n                let element;\n                if (item.type === 'talk') {\n                    element = document.createElement('div');\n                    element.classList.add('talk-card');\n                    // Store categories as a data attribute for filtering\n                    element.setAttribute('data-categories', item.categories.map(cat => cat.toLowerCase()).join(','));\n                    element.innerHTML = `\n                        <div class=\"time\">${item.startTime} - ${item.endTime}</div>\n                        <h3>${item.title}</h3>\n                        <p class=\"speakers\">Speaker(s): ${item.speakers.join(', ')}</p>\n                        <div class=\"categories\">\n                            ${item.categories.map(cat => `<span class=\"category-tag\">${cat}</span>`).join('')}\n                        </div>\n                        <p class=\"description\">${item.description}</p>\n                    `;\n                } else { // type === 'break'\n                    element = document.createElement('div');\n                    element.classList.add('break-card');\n                    element.innerHTML = `\n                        <div class=\"time\">${item.startTime} - ${item.endTime}</div>\n                        <h3>${item.title}</h3>\n                        <p class=\"duration\">${item.duration}</p>\n                    `;\n                }\n                scheduleList.appendChild(element);\n            });\n        }\n\n        function populateCategoryFilter() {\n            const allCategories = new Set();\n            talksData.forEach(talk => {\n                if (talk.categories) {\n                    talk.categories.forEach(cat => allCategories.add(cat));\n                }\n            });\n\n            const sortedCategories = Array.from(allCategories).sort();\n\n            sortedCategories.forEach(category => {\n                const option = document.createElement('option');\n                option.value = category.toLowerCase(); // Use lowercase for filter matching\n                option.textContent = category;\n                categoryFilter.appendChild(option);\n            });\n        }\n\n        function filterSchedule() {\n            const selectedCategory = categoryFilter.value; // Already lowercase\n            const allItems = scheduleList.children; // Get all rendered items\n\n            for (let i = 0; i < allItems.length; i++) {\n                const item = allItems[i];\n                if (item.classList.contains('talk-card')) {\n                    const talkCategories = item.getAttribute('data-categories'); // Already lowercase\n                    if (selectedCategory === 'all' || talkCategories.includes(selectedCategory)) {\n                        item.classList.remove('hidden');\n                    } else {\n                        item.classList.add('hidden');\n                    }\n                } else {\n                    // Break cards are always visible\n                    item.classList.remove('hidden');\n                }\n            }\n        }\n\n        // Initial render of the full schedule\n        renderSchedule(fullSchedule);\n        populateCategoryFilter();\n\n        // Event Listener for Filter\n        categoryFilter.addEventListener('change', filterSchedule);\n    });\n</script>\n</body>\n</html>
